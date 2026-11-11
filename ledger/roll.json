@@ -33,5 +33,15 @@
     "path": "the-values-are-checked-against-a-private-copy/skip-without-the-copy",
     "kind": "alternative",
     "digest": "a05f36c6d4e6"
+  },
+  {
+    "path": "this-repos-own-work-is-agpl",
+    "kind": "decision",
+    "digest": "f48eda3712cd"
+  },
+  {
+    "path": "this-repos-own-work-is-agpl/apache-2.0",
+    "kind": "alternative",
+    "digest": "9deba4497210"
   }
 ]

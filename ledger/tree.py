@@ -71,6 +71,20 @@ def entries() -> list[Node]:
                      "No source says plywood holds a Clamex at least as well."),
             ],
         ),
+        Node(
+            id="this-repos-own-work-is-agpl", kind="decision",
+            name="This repo's own work is licensed AGPL-3.0-or-later, copyright Xavier Grehant, as "
+                 "furniture-design is; a study quoted here keeps its own licence (CC BY), and Lamello's "
+                 "names and values are cited, not licensed. A contribution from anyone else is merged only "
+                 "with an agreement that lets the copyright holder license it under other terms as well",
+            payload={"decided_on": "2026-11-11",
+                     "why": "Same terms as the package it extends (furniture-design decision "
+                            "this-repos-own-work-is-agpl): open source, and nobody may host it closed."},
+            children=[
+                _alt("apache-2.0", "Apache-2.0, as quern is",
+                     "Lets anyone host it in a closed paid service."),
+            ],
+        ),
     ]
 
 

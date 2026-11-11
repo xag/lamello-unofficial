@@ -35,6 +35,10 @@ uv run quern check
 
 There is no flight-recorder boundary: nothing here touches storage, the network, the clock or randomness.
 
+## Licence
+
+The code and the data as arranged here are licensed under the [GNU Affero General Public License v3.0 or later](LICENSE), copyright 2026 Xavier Grehant. Anyone who runs a modified copy as a network service must offer its users that copy's source. A study quoted here keeps its own licence (CC BY), and Lamello's product names and values are cited from its pages, not licensed. Other terms can be granted by the copyright holder; a contribution is merged only with an agreement that lets the holder license it under other terms as well.
+
 ## Tests
 
 `uv run pytest --testmon`, then `uv run pytest`. Both stop at the first failure.
