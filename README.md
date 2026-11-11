@@ -5,6 +5,7 @@ Lamello's connectors and the tools that cut their seats, as data for [furniture-
 ## What is here
 
 - `lamello_unofficial.knowledge()`: the Clamex P-14 connector (minimum workpiece width, minimum material thickness for each kind of cut, pull-out and shear strength in particle board, MDF and beech, the P-System setting P-14) and the two tools its groove is cut with (the Zeta P2, or a CNC machine with a P-System cutter).
+- How much a Clamex P-14 corner joint resists being bent open or shut (9 and 15 N·m for a joint of two connectors in 18 mm particle board), from Janíková et al. (2025), *Materials* 18(9), 2114, an open-access study under CC BY 4.0: quoted, its text kept under `sources/janikova-2025/`, and halved per connector. furniture-design's sideways check reads it to count what a piece's corner joints hold.
 - No kinds and no rules of its own. A joint that uses the connector is checked by furniture-design's rules: the joined parts are thick enough for the kind of cut and wide enough, and the joint is cut with one of the connector's tools at its setting.
 
 ## Sources

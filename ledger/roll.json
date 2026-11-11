@@ -1,5 +1,15 @@
 [
   {
+    "path": "a-published-test-of-a-product-is-its-data-here",
+    "kind": "decision",
+    "digest": "c171292baeac"
+  },
+  {
+    "path": "a-published-test-of-a-product-is-its-data-here/take-particleboard-for-plywood",
+    "kind": "alternative",
+    "digest": "6d9a4c4238ae"
+  },
+  {
     "path": "the-products-are-data-on-furniture-designs-kinds",
     "kind": "decision",
     "digest": "77ecab2e96d3"

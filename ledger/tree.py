@@ -54,6 +54,23 @@ def entries() -> list[Node]:
                      "A skipped check reads as green on every machine that cannot run it."),
             ],
         ),
+        Node(
+            id="a-published-test-of-a-product-is-its-data-here", kind="decision",
+            name="A published test of a Lamello product by someone else (a study's measured values) is data "
+                 "here, on the product's node, cited as its own source: quoted and kept in this repo when "
+                 "its licence allows (CC BY), cited by locator and values when it does not. A value "
+                 "measured on one material is stored under that material's key, never applied to another",
+            payload={"decided_on": "2026-11-11",
+                     "why": "Lamello rates the Clamex P-14 in pull-out and shear but says nothing of a "
+                            "corner joint bent open or shut; Janíková et al. (2025) measured it, in 18 mm "
+                            "particle board. Under moment_<mode>_particleboard, a check of a plywood piece "
+                            "still finds nothing for plywood and says so."},
+            links={"rests_on": ["the-products-are-data-on-furniture-designs-kinds"]},
+            children=[
+                _alt("take-particleboard-for-plywood", "Use the particle board values for plywood",
+                     "No source says plywood holds a Clamex at least as well."),
+            ],
+        ),
     ]
 
 

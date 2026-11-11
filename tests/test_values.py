@@ -46,10 +46,29 @@ def test_the_data_passes_furniture_designs_rules():
     assert [(r.rule, r.node, r.verdict) for r in run_rules(_tree()) if not r.ok] == []
 
 
-def test_no_clause_here_carries_a_quote():
-    sources = knowledge()[0].children
-    assert all(s.payload["licence"] == "copyrighted" for s in sources)
+def test_no_copyrighted_clause_carries_a_quote():
+    sources = [s for s in knowledge()[0].children if s.payload["licence"] == "copyrighted"]
+    assert sources
     assert all("quote" not in c.payload for s in sources for c in s.children)
+
+
+def test_every_quote_of_an_open_source_is_in_its_copy():
+    """A CC BY source may be quoted; its copy is kept here and every quote must be in it."""
+    open_ = [s for s in knowledge()[0].children if s.payload["licence"].startswith("cc-by")]
+    assert open_
+    for s in open_:
+        text = re.sub(r"\s+", " ", (ROOT / s.payload["capture"]).read_text(encoding="utf-8"))
+        for c in s.children:
+            assert re.sub(r"\s+", " ", c.payload["quote"]) in text, c.id
+
+
+def test_the_corner_joint_values_are_the_quoted_ones_per_connector():
+    from lamello_unofficial import L_JOINT, STUDY_JOINT_CONNECTORS
+    clamex = knowledge()[1].children[0]
+    quote = knowledge()[0].children[1].children[2].payload["quote"]
+    for name, v, _unit, words in L_JOINT:
+        assert words in quote
+        assert clamex.params[f"{name}_particleboard"].value == v * 1000 / STUDY_JOINT_CONNECTORS
 
 
 def _box(thickness: float, cut: str = "surface", tool: str = "tools/lamello-zeta-p2") -> Node:

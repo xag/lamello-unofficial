@@ -78,8 +78,73 @@ def connectors() -> Node:
                                                 "a 6 mm access hole"},
                   params=params,
                   links={"needs": ["tools/lamello-zeta-p2", "tools/cnc-with-p-system-cutter"],
-                         "per": [TECHNICAL_DATA, DESCRIPTION]})
+                         "per": [TECHNICAL_DATA, DESCRIPTION, STUDY_RESULT,
+                                 f"{STUDY}/specimens", f"{STUDY}/table-1-specimen-a"]})
+    # a corner joint's resistance to being bent open or shut, per connector: the study's
+    # joint of two connectors, halved; in N mm and N mm/rad, the units the checks use
+    for name, v, unit, words in L_JOINT:
+        si = v * 1000.0
+        clamex.params[f"{name}_particleboard"] = Quantity(
+            value=si / STUDY_JOINT_CONNECTORS, unit=unit.replace("N m", "N mm"),
+            provenance="derived", grounded=True,
+            derived_from=[f"{STUDY_RESULT}/{name}", f"{STUDY}/table-1-specimen-a/connectors"],
+            note=f"{words} for an L-joint of 18 mm particle board with two connectors, halved; "
+                 "measured with an ABS edge band, 400 mm long")
     return Node(id="connectors", kind="", children=[clamex])
+
+
+STUDY = "sources/janikova-2025"
+STUDY_RESULT = f"{STUDY}/clamex-p-14-l-joint"
+STUDY_JOINT_CONNECTORS = 2  # Table 1: specimen A is joined by 2 pcs Clamex P-14
+
+# What specimen A (an L-shaped corner of 18 mm particle board, 400 mm long, two Clamex
+# P-14) held in angular bending, per joint: (param, value, unit, the words it is in)
+L_JOINT = [
+    ("moment_opening", 9.0, "N m", "9 Nm (tension)"),
+    ("moment_closing", 15.0, "N m", "15 Nm (compression)"),
+    ("stiffness_opening", 55.0, "N m/rad", "55 Nm/rad (tension)"),
+    ("stiffness_closing", 237.0, "N m/rad", "237 Nm/rad (compression)"),
+]
+
+
+def study() -> Node:
+    """A study of the Clamex P-14 as a corner joint: CC BY, so quoted and kept here."""
+    q = lambda v, unit, note: Quantity(value=v, unit=unit, provenance="published",  # noqa: E731
+                                       grounded=True, source="Results and discussion",
+                                       note=note)
+    return Node(
+        id="janikova-2025", kind="source",
+        name="Janíková, Kořený, Gaff, Hlavatý: Comparative Study on Strengths of "
+             "Ready-to-Assemble and Eccentric Furniture Joint, Materials 18(9), 2114 (2025)",
+        payload={"publisher": "MDPI", "year": 2025, "identifier": "doi:10.3390/ma18092114",
+                 "url": "https://www.mdpi.com/1996-1944/18/9/2114",
+                 "sha256": "a52aa32ebe67a9b8ff4d8b9d6b4c382605e42eced6bb8a8f5e0ae8c90afd1ad4",
+                 "licence": "cc-by-4.0",
+                 "capture": "sources/janikova-2025/ma18092114.txt"},
+        children=[
+            Node(id="specimens", kind="clause",
+                 payload={"locator": "2. Materials and Methods",
+                          "quote": "Twenty replicates of each type of L-specimen were made with "
+                                   "dimensions of 150 × 150 × 400 mm. The face and rear members "
+                                   "were joined at a 90° angle. The base material was a "
+                                   "three-layer particleboard (producer: DDL Lukapol from "
+                                   "Slovakia; basic with lamination; 18 mm thickness)."},
+                 params={"joint_length": Quantity(value=400.0, unit="mm", provenance="published",
+                                                  grounded=True, note="150 × 150 × 400 mm"),
+                         "thickness": Quantity(value=18.0, unit="mm", provenance="published",
+                                               grounded=True, note="18 mm thickness")}),
+            Node(id="table-1-specimen-a", kind="clause",
+                 payload={"locator": "Table 1, specimen A", "quote": "2 pcs Clamex P-14"},
+                 params={"connectors": Quantity(value=2.0, unit="", provenance="published",
+                                                grounded=True, note="2 pcs")}),
+            Node(id="clamex-p-14-l-joint", kind="clause",
+                 payload={"locator": "Results and discussion, specimen A",
+                          "quote": "the tested joint A achieved average values of 9 Nm "
+                                   "(tension), 15 Nm (compression), a stiffness of 55 Nm/rad "
+                                   "(tension), and 237 Nm/rad (compression) in the bending "
+                                   "tests in the angular plane"},
+                 params={name: q(v, unit, words) for name, v, unit, words in L_JOINT}),
+        ])
 
 
 def tools() -> Node:
@@ -95,4 +160,4 @@ def tools() -> Node:
 
 def knowledge() -> list[Node]:
     """Top-level branches to merge with furniture-design's: sources, connectors, tools."""
-    return [Node(id="sources", kind="", children=[source()]), connectors(), tools()]
+    return [Node(id="sources", kind="", children=[source(), study()]), connectors(), tools()]
