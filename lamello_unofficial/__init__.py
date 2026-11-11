@@ -39,6 +39,9 @@ CLAMEX_P_14 = [
     ("shear_beech", 2940, "N", "shear strength in beech"),
 ]
 SETTING = "P-14"  # the P-System setting its groove is cut at
+# The table's size row, "Taille (L x H x I)": length, height, thickness, in that order, mm.
+# furniture-design draws a connector at its length along the joint and thickness across it.
+CLAMEX_P_14_SIZE = [("length", 64), ("height", 27), ("thickness", 9.7)]
 
 
 def _published(value: float, unit: str, label: str) -> Quantity:
@@ -59,7 +62,9 @@ def source() -> Node:
             Node(id="technical-data", kind="clause",
                  payload={"locator": "technical data table (Données techniques)",
                           "setting": SETTING},
-                 params={name: _published(v, unit, label) for name, v, unit, label in CLAMEX_P_14}),
+                 params={**{name: _published(v, unit, label) for name, v, unit, label in CLAMEX_P_14},
+                         **{name: _published(v, "mm", f"size (L x H x I), {name}")
+                            for name, v in CLAMEX_P_14_SIZE}}),
             Node(id="product-description", kind="clause",
                  payload={"locator": "product description (Description du produit)",
                           "in_our_words": "the P-System groove is cut with the Zeta P2 groove "
@@ -71,6 +76,10 @@ def connectors() -> Node:
     params = {name: Quantity(value=float(v), unit=unit, provenance="derived", grounded=True,
                              derived_from=[f"{TECHNICAL_DATA}/{name}"], note=label)
               for name, v, unit, label in CLAMEX_P_14}
+    params.update({name: Quantity(value=float(v), unit="mm", provenance="derived", grounded=True,
+                                  derived_from=[f"{TECHNICAL_DATA}/{name}"],
+                                  note=f"size (L x H x I), {name}")
+                   for name, v in CLAMEX_P_14_SIZE})
     clamex = Node(id="lamello-clamex-p-14", kind="connector", name="Lamello Clamex P-14",
                   payload={"maker": "Lamello", "setting": SETTING,
                            "kind_of_connector": "knock-down furniture connector seated in a "

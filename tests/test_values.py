@@ -17,7 +17,7 @@ from quern.tree import Node
 
 from furniture_design.knowledge import knowledge as general, merge
 from furniture_design.package import PACKAGE
-from lamello_unofficial import CLAMEX_P_14, SETTING, knowledge
+from lamello_unofficial import CLAMEX_P_14, CLAMEX_P_14_SIZE, SETTING, knowledge
 
 ROOT = Path(__file__).resolve().parents[1]
 CAPTURE = Path(os.environ.get("FURNITURE_REPO", ROOT.parent / "furniture")) / \
@@ -35,6 +35,14 @@ def test_every_value_is_the_pages_in_the_pages_order():
     assert rows == [(float(v), u) for _, v, u, _ in CLAMEX_P_14]
     assert re.search(rf"\t{re.escape(SETTING)}\s*$", table, flags=re.M)
 
+
+
+def test_the_size_is_the_pages_size_row():
+    assert CAPTURE.exists(), (f"the private copy of the page is not at {CAPTURE}: clone "
+                              "xag/furniture beside this repo or set FURNITURE_REPO")
+    text = CAPTURE.read_text(encoding="utf-8")
+    row = re.search(r"^Taille \(L x H x I\)\t([\d.]+) x ([\d.]+) x ([\d.]+) mm\s*$", text, flags=re.M)
+    assert row and [float(v) for v in row.groups()] == [float(v) for _, v in CLAMEX_P_14_SIZE]
 
 def _tree(*extra: Node) -> Quern:
     tree = Quern(vocabulary=PACKAGE.vocabulary, rules=PACKAGE.rules, solvers=PACKAGE.solvers)
