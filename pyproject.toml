@@ -3,7 +3,7 @@ name = "lamello-unofficial"
 version = "0.1.0"
 description = "Lamello's connectors and the tools that cut their seats, as data on furniture-design's kinds. Unofficial: not written or endorsed by Lamello."
 requires-python = ">=3.11"
-license = "AGPL-3.0-or-later AND ODbL-1.0"
+license = "AGPL-3.0-or-later AND CC-BY-NC-SA-4.0"
 license-files = ["LICENSE", "LICENSE-DATA"]
 dependencies = ["quern", "furniture-design"]
 

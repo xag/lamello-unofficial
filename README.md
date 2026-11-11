@@ -40,10 +40,10 @@ There is no flight-recorder boundary: nothing here touches storage, the network,
 One licence for the code, one for the data:
 
 - **The code** (`lamello_unofficial/` apart from the data it returns, `tests/`, `ledger/`) is licensed under the [GNU Affero General Public License v3.0 or later](LICENSE), copyright 2026 Xavier Grehant. Anyone who runs a modified copy as a network service must offer its users that copy's source.
-- **The knowledge base**, the database `lamello_unofficial.knowledge()` returns (its sources, clauses, connectors, tools and every value on them), is licensed under the [Open Database License v1.0](LICENSE-DATA). A database derived from it and used publicly, including one behind an app, must be offered under the ODbL as well.
+- **The knowledge base**, the database `lamello_unofficial.knowledge()` returns (its sources, clauses, connectors, tools and every value on them), is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](LICENSE-DATA), database rights included (its section 4). Anyone may use, share and adapt it for a non-commercial purpose, crediting it and sharing what they derive under the same licence. Any commercial use of the data, such as an app or a service that is paid for or earns money, needs a commercial licence from the copyright holder. One permission is given here in addition: designing, building and selling furniture with it is allowed, since what is sold is the furniture, not the data.
 - A study quoted here keeps its own licence (CC BY), and Lamello's product names and values are cited from its pages, not licensed.
 
-Other terms can be granted by the copyright holder. To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
+A commercial licence for the data, or other terms for the code, can be granted by the copyright holder. To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Tests
 
