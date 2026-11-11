@@ -1,0 +1,27 @@
+[
+  {
+    "path": "the-products-are-data-on-furniture-designs-kinds",
+    "kind": "decision",
+    "digest": "77ecab2e96d3"
+  },
+  {
+    "path": "the-products-are-data-on-furniture-designs-kinds/an-empty-quern-package",
+    "kind": "alternative",
+    "digest": "baea023d7f30"
+  },
+  {
+    "path": "the-products-are-data-on-furniture-designs-kinds/lamello-rules",
+    "kind": "alternative",
+    "digest": "765aa8ac2d05"
+  },
+  {
+    "path": "the-values-are-checked-against-a-private-copy",
+    "kind": "decision",
+    "digest": "013b58d9c703"
+  },
+  {
+    "path": "the-values-are-checked-against-a-private-copy/skip-without-the-copy",
+    "kind": "alternative",
+    "digest": "a05f36c6d4e6"
+  }
+]
