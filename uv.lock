@@ -312,7 +312,7 @@ wheels = [
 [[package]]
 name = "furniture-design"
 version = "0.1.0"
-source = { git = "https://github.com/xag/furniture-design?rev=980ec1dae92bf8cd45325dcd783a997b4bef58e6#980ec1dae92bf8cd45325dcd783a997b4bef58e6" }
+source = { git = "https://github.com/xag/furniture-design?rev=a69f1a92f3aa9de29bdf3a9f482b18b7f3117265#a69f1a92f3aa9de29bdf3a9f482b18b7f3117265" }
 dependencies = [
     { name = "quern" },
     { name = "reportlab" },
@@ -345,7 +345,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "furniture-design", git = "https://github.com/xag/furniture-design?rev=980ec1dae92bf8cd45325dcd783a997b4bef58e6" },
+    { name = "furniture-design", git = "https://github.com/xag/furniture-design?rev=a69f1a92f3aa9de29bdf3a9f482b18b7f3117265" },
     { name = "quern", git = "https://github.com/xag/quern?rev=07eff6efc0625ee0613a083095db4e6b75be7284" },
 ]
 
