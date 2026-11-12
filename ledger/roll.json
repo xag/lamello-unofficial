@@ -45,6 +45,26 @@
     "digest": "568f5a9112f0"
   },
   {
+    "path": "the-knowledge-is-shared-unchanged-and-improved-only-here",
+    "kind": "decision",
+    "digest": "ed0c433be998"
+  },
+  {
+    "path": "the-knowledge-is-shared-unchanged-and-improved-only-here/close-the-base",
+    "kind": "alternative",
+    "digest": "671a5be9ca71"
+  },
+  {
+    "path": "the-knowledge-is-shared-unchanged-and-improved-only-here/keep-share-alike",
+    "kind": "alternative",
+    "digest": "fdf39377e697"
+  },
+  {
+    "path": "the-knowledge-is-shared-unchanged-and-improved-only-here/no-redistribution",
+    "kind": "alternative",
+    "digest": "3e2c7197e5af"
+  },
+  {
     "path": "the-products-are-data-on-furniture-designs-kinds",
     "kind": "decision",
     "digest": "77ecab2e96d3"
