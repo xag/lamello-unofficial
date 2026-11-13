@@ -72,6 +72,60 @@ def entries() -> list[Node]:
             ],
         ),
         Node(
+            id="another-clamex-sizes-test-stands-in-only-below-the-p-14s-rating", kind="decision",
+            name="A test of another Clamex size (P-10, P-15) is kept as a clause and listed in the P-14's "
+                 "`tested_elsewhere`. It stands in for a P-14 value only when Lamello's own ratings, of one "
+                 "edition, put that size at or below the P-14 in every material both are rated in; it then "
+                 "goes on the P-14 under the material's key, grounded False, its note naming the connector "
+                 "it was measured on. Saar et al.'s P-15 values in birch plywood do not stand in: Lamello "
+                 "rated the P-15 above the P-14 in beech",
+            payload={"decided_on": "2026-11-13",
+                     "why": "A shoe bench of birch plywood joined by Clamex P-14 cannot be judged sideways: "
+                            "Lamello rates the P-14 only in particle board, MDF and beech, and no study found "
+                            "tests it in plywood. Saar et al. (2015) tested the P-15, which the P-14 succeeded "
+                            "(Lamello's 2014 page calls the P-14 the new generation), in 21 mm birch plywood. "
+                            "A value taken from a stronger connector would let the check pass a piece the P-14 "
+                            "may not hold, and ungrounded marks the value but the check still reads it. "
+                            "Lamello's pages of 2013 (P-15) and 2014 (P-14) are the one edition found that "
+                            "rates both in the same materials: equal in particle board (800 N in tension), the "
+                            "P-15 above in beech (1300 N against 1000 N). tests/test_other_sizes.py holds the "
+                            "comparison and that no P-14 value is read from a P-15 clause while it stands."},
+            links={"rests_on": ["a-published-test-of-a-product-is-its-data-here"]},
+            children=[
+                _alt("borrow-the-p-15-ungrounded", "Put Saar's P-15 means on the P-14 as shear_plywood and "
+                     "pull_out_plywood, ungrounded",
+                     "Lamello rates the P-15 above the P-14 in beech, so the value could overstate the P-14."),
+                _alt("scale-by-the-beech-ratio", "Scale the P-15's values by the beech ratio, 1000/1300",
+                     "No source says the ratio in beech, in tension, holds in plywood, or in shear."),
+                _alt("compare-with-todays-p-14-page", "Compare the P-15's 2013 ratings with today's P-14 page "
+                     "(1870 N in beech)",
+                     "Lamello restated its ratings between editions: the P-14's own particle board figure "
+                     "went from 800 N (2014) to 1070 N (today), so two editions' figures do not compare."),
+            ],
+        ),
+        Node(
+            id="a-bending-test-in-an-unnamed-direction-is-never-rated", kind="decision",
+            name="A joint bent in one direction that its source does not name as opening or closing it, "
+                 "or bent with another connector size, is kept as a clause and never becomes a "
+                 "moment_opening_<key> or moment_closing_<key>",
+            payload={"decided_on": "2026-11-13",
+                     "why": "The frame check counts a joint at the mean of its opening and closing moments, "
+                            "and the direction matters: Janíková et al. (2025) measured a P-14 corner joint at "
+                            "9 N m bent open and 15 N m bent shut. Sydor & Pohl (2019) bent T-joints of Clamex "
+                            "P-10 with the force 'only in one direction (up)', without saying whether that "
+                            "opens or closes the joint. Their plywood, oak and pine moments are clauses the "
+                            "P-14 lists in `tested_elsewhere`, and a plywood piece's frame check stays "
+                            "unjudged."},
+            links={"rests_on": ["a-published-test-of-a-product-is-its-data-here"]},
+            children=[
+                _alt("take-it-as-both", "Use the one direction's moment for both opening and closing",
+                     "It may be the stronger direction; in Janíková's P-14 joint closing holds 1.7 times "
+                     "what opening does."),
+                _alt("take-it-as-opening", "Use it as the opening moment, the weaker one in Janíková",
+                     "Nothing says Sydor's 'up' opened the joint, and it was a P-10, not a P-14."),
+            ],
+        ),
+        Node(
             id="this-repos-own-work-is-agpl", kind="decision",
             name="This repo's own work is licensed AGPL-3.0-or-later, copyright Xavier Grehant, as "
                  "furniture-design is; a study quoted here keeps its own licence (CC BY), and Lamello's "

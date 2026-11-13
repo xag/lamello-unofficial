@@ -1,5 +1,20 @@
 [
   {
+    "path": "a-bending-test-in-an-unnamed-direction-is-never-rated",
+    "kind": "decision",
+    "digest": "5c668f3b831a"
+  },
+  {
+    "path": "a-bending-test-in-an-unnamed-direction-is-never-rated/take-it-as-both",
+    "kind": "alternative",
+    "digest": "cb7f5b917140"
+  },
+  {
+    "path": "a-bending-test-in-an-unnamed-direction-is-never-rated/take-it-as-opening",
+    "kind": "alternative",
+    "digest": "30f6bd2a63bf"
+  },
+  {
     "path": "a-published-test-of-a-product-is-its-data-here",
     "kind": "decision",
     "digest": "c171292baeac"
@@ -8,6 +23,26 @@
     "path": "a-published-test-of-a-product-is-its-data-here/take-particleboard-for-plywood",
     "kind": "alternative",
     "digest": "6d9a4c4238ae"
+  },
+  {
+    "path": "another-clamex-sizes-test-stands-in-only-below-the-p-14s-rating",
+    "kind": "decision",
+    "digest": "f5c327840f2e"
+  },
+  {
+    "path": "another-clamex-sizes-test-stands-in-only-below-the-p-14s-rating/borrow-the-p-15-ungrounded",
+    "kind": "alternative",
+    "digest": "8b7d438ccede"
+  },
+  {
+    "path": "another-clamex-sizes-test-stands-in-only-below-the-p-14s-rating/compare-with-todays-p-14-page",
+    "kind": "alternative",
+    "digest": "478674ff0d84"
+  },
+  {
+    "path": "another-clamex-sizes-test-stands-in-only-below-the-p-14s-rating/scale-by-the-beech-ratio",
+    "kind": "alternative",
+    "digest": "f4ac0e52a7ec"
   },
   {
     "path": "only-the-owner-earns-from-the-knowledge",
