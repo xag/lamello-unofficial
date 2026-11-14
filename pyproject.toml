@@ -21,7 +21,7 @@ dev = ["pytest>=8.0.0", "pytest-testmon>=2.1"]
 # Pinned by full rev, always, and to the same quern as furniture-design: uv accepts one URL
 # per distribution across a resolution.
 quern = { git = "https://github.com/xag/quern", rev = "07eff6efc0625ee0613a083095db4e6b75be7284" }
-furniture-design = { git = "https://github.com/xag/furniture-design", rev = "96fc80b1deb6649331c79ddc45fbb1a3e4e43003" }
+furniture-design = { git = "https://github.com/xag/furniture-design", rev = "ffb280714ea678f60183445855574fc0452933c4" }
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
