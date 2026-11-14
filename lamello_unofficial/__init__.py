@@ -26,6 +26,8 @@ from quern.tree import Node
 SOURCE = "sources/lamello-clamex-p-14"
 TECHNICAL_DATA = f"{SOURCE}/technical-data"
 DESCRIPTION = f"{SOURCE}/product-description"
+INSTRUCTIONS = "sources/lamello-clamex-p-14-instructions"
+OPEN_AND_CLOSE = f"{INSTRUCTIONS}/open-and-close"
 
 # The technical data table of the Clamex P-14 page, as fetched on 2026-11-11, in the
 # order its rows appear there: (param, value, unit, what the row gives, in our words)
@@ -76,6 +78,31 @@ def source() -> Node:
         ])
 
 
+def instructions() -> Node:
+    """Lamello's instructions for the Clamex P-14 (Mode d'emploi), a two-page sheet of
+    figures: how it closes is drawn, not written, so the clause says in our words what the
+    figures show and carries no value."""
+    return Node(
+        id="lamello-clamex-p-14-instructions", kind="source",
+        name="Lamello, Clamex P-14 instructions (Mode d'emploi)",
+        payload={"publisher": "Lamello AG", "year": 2019,
+                 "url": "https://www.lamello.com/fileadmin/products/Mode_d_emploi_ClamexP14.pdf",
+                 "fetched": "2026-11-14, linked as Mode d'emploi from the Clamex P-14 page",
+                 "sha256": "5b075112b363ee3a096c1c72271cf4cb9393f778b25cd0ef6a729a679ae4524d",
+                 "licence": "copyrighted", "connector": "Lamello Clamex P-14",
+                 "capture": "xag/furniture: sources/lamello/lamello-clamex-p-14-instructions/"
+                            "Mode_d_emploi_ClamexP14.pdf (private)"},
+        children=[
+            Node(id="open-and-close", kind="clause",
+                 payload={"locator": "p. 2, the two figures marked open and close (sheet "
+                                     "Clamex P-14 08/19)",
+                          "in_our_words": "turned to close, the lever draws the two halves "
+                                          "together across the joint line, square to it; "
+                                          "turned to open, it pushes them apart the same way, "
+                                          "the element then reaching across the joint line"}),
+        ])
+
+
 def connectors() -> Node:
     params = {name: Quantity(value=float(v), unit=unit, provenance="derived", grounded=True,
                              derived_from=[f"{TECHNICAL_DATA}/{name}"], note=label)
@@ -89,10 +116,11 @@ def connectors() -> Node:
                            "kind_of_connector": "knock-down furniture connector seated in a "
                                                 "P-System groove, closed with a lever through "
                                                 "a 6 mm access hole",
+                           "engages": "square",
                            "tested_elsewhere": tested_elsewhere()},
                   params=params,
                   links={"needs": ["tools/lamello-zeta-p2", "tools/cnc-with-p-system-cutter"],
-                         "per": [TECHNICAL_DATA, DESCRIPTION, STUDY_RESULT,
+                         "per": [TECHNICAL_DATA, DESCRIPTION, OPEN_AND_CLOSE, STUDY_RESULT,
                                  f"{STUDY}/specimens", f"{STUDY}/table-1-specimen-a"]})
     # a corner joint's resistance to being bent open or shut, per connector: the study's
     # joint of two connectors, halved; in N mm and N mm/rad, the units the checks use
@@ -359,5 +387,6 @@ def tools() -> Node:
 def knowledge() -> list[Node]:
     """Top-level branches to merge with furniture-design's: sources, connectors, tools."""
     return [Node(id="sources", kind="", children=[source(), study(), saar(), sydor(),
-                                                  lamello_page(P_15_2013), lamello_page(P_14_2014)]),
+                                                  lamello_page(P_15_2013), lamello_page(P_14_2014),
+                                                  instructions()]),
             connectors(), tools()]

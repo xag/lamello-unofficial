@@ -193,3 +193,13 @@ def test_a_test_kept_elsewhere_is_a_clause_and_rates_nothing():
                     r"stiffness_closing)_", "", k) for k in clamex.params
              if re.match(r"(shear|pull_out|moment|stiffness)_", k)}
     assert rated == {"particleboard", "mdf", "beech"}
+
+
+def test_the_instructions_copy_is_what_was_fetched():
+    """The Clamex P-14 engages square as Lamello's instructions draw it (p. 2, open and close):
+    the copy the clause was read from is the one fetched."""
+    source = _sources()["lamello-clamex-p-14-instructions"]
+    assert hashlib.sha256(_copy(source).read_bytes()).hexdigest() == source.payload["sha256"]
+    clamex = next(c for c in knowledge()[1].children if c.id == "lamello-clamex-p-14")
+    assert clamex.payload["engages"] == "square"
+    assert "sources/lamello-clamex-p-14-instructions/open-and-close" in clamex.links["per"]
