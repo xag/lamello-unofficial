@@ -17,7 +17,7 @@ from quern.tree import Node
 from furniture_design.knowledge import knowledge as general, merge
 from furniture_design.package import PACKAGE
 from furniture_design.scene import scene, seats
-from lamello_unofficial import BROCHURE_DOC, ZETA_DOCS, knowledge
+from lamello_unofficial import BROCHURE_DOC, VIDEO_DOC, ZETA_DOCS, knowledge
 
 ROOT = Path(__file__).resolve().parents[1]
 FURNITURE = Path(os.environ.get("FURNITURE_REPO", ROOT.parent / "furniture"))
@@ -42,6 +42,17 @@ def test_every_value_of_the_zeta_p2s_documents_is_printed_in_the_copy_fetched():
         for cid, _locator, params in clauses:
             for param, (_value, _unit, printed) in params.items():
                 assert _flat(printed) in text, (sid, cid, param, printed)
+
+
+def test_every_passage_of_lamellos_video_is_in_the_account_kept():
+    """The video is cited from the account Gemini gave of it, kept privately by its YouTube id."""
+    sid, _name, url, sha, clauses = VIDEO_DOC
+    path = _copy(f"sources/videos/{url.rsplit('=', 1)[1]}.md")
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == sha
+    text = path.read_text(encoding="utf-8")
+    for cid, _locator, words in clauses:
+        for w in words:
+            assert w in text, (cid, w)
 
 
 def test_the_access_holes_values_are_printed_on_the_clamex_p14_sheet():

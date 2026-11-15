@@ -463,6 +463,35 @@ def brochure() -> Node:
                                params={k: _published(v[0], v[1], v[2]) for k, v in params.items()})])
 
 
+VIDEO = "sources/lamello-video-clamex-p-14-non-mitred"
+# Lamello's video, as its distributor Colonial Saw posted it: (id, name, url, sha256 of the account Gemini
+# gave of it, kept privately under videos/<YouTube id>.md, [(clause id, locator, the words it rests on)]).
+VIDEO_DOC = ("lamello-video-clamex-p-14-non-mitred",
+             "Lamello, Joining with Clamex P-14: non-mitred angles (video, posted by its distributor Colonial "
+             "Saw as Lamello Clamex P-14 | 90° Joint with Zeta P2)",
+             "https://www.youtube.com/watch?v=8NCyH4o32Yo",
+             "9d591493bd7dc2a40fe44b625d6654edeb36dced17b1a547134347a0f3d2de02",
+             [("edge-groove-first", "00:25 to 00:43: step 1, the grooves in the edge, the base plate flat on the face",
+               ["Step 1: Cut the grooves in the edge", "base plate lying flat against the large flat face"]),
+              ("drill-the-edge-grooved-part", "00:44 to 00:55: the drill jig over the edge, at the groove, then the drill",
+               ["drill jig", "aligned with the groove location"]),
+              ("face-groove-upright", "01:37 to 01:56: step 4, the machine upright, its stop against the edge",
+               ["The machine stands upright"])])
+
+
+def video() -> Node:
+    """Lamello's video of a Clamex P-14 angle joint cut with the Zeta P2, cited from the account Gemini
+    gave of it: nobody here watched it."""
+    sid, name, url, sha, clauses = VIDEO_DOC
+    return Node(id=sid, kind="source", name=name,
+                payload={"publisher": "Lamello AG (posted by Colonial Saw)", "url": url, "fetched": "2026-11-15",
+                         "sha256": sha, "licence": "copyrighted", "authority": "maker",
+                         "read_by": "Gemini (gemini.google.com, the model it calls Quick answers, 3.5 Flash-Lite), "
+                                    "asked on 2026-11-15 for what is said and shown, with timestamps",
+                         "capture": "xag/furniture: sources/videos/8NCyH4o32Yo.md (private), Gemini's account"},
+                children=[Node(id=cid, kind="clause", payload={"locator": loc}) for cid, loc, _w in clauses])
+
+
 def zeta_sources() -> list[Node]:
     """The Zeta P2's manual and Lamello's pages on using it, one clause per passage relied on, its
     values as printed."""
@@ -557,12 +586,13 @@ def tools() -> Node:
                             f"{DEPTH_TIP}/steps", f"{MACHINING}/equal-distance",
                             f"{MACHINING}/surface-connections", f"{MANUAL}/angle-joint",
                             f"{ANGLE_TIP}/steps", f"{MACHINING}/butt-angle-joints",
-                            f"{MANUAL}/cutting-grooves"],
+                            f"{MANUAL}/cutting-grooves", f"{VIDEO}/edge-groove-first",
+                            f"{VIDEO}/face-groove-upright"],
                     "follows": ["tools/plate-jointer"]}),
         Node(id="lamello-clamex-p-drill-jig", kind="tool", name="Lamello Clamex P drill jig",
              payload={"maker": "Lamello", "does": "drills a Clamex P's access hole square to the face, "
                                                   "centred on its groove", "say": JIG_SAY},
-             links={"per": [f"{MANUAL}/drill-access-hole"]}),
+             links={"per": [f"{MANUAL}/drill-access-hole", f"{VIDEO}/drill-the-edge-grooved-part"]}),
         Node(id="cnc-with-p-system-cutter", kind="tool", name="CNC machine with a P-System cutter",
              payload={"maker": "any", "does": "cuts the P-System groove"},
              links={"per": [DESCRIPTION]}),
@@ -590,5 +620,5 @@ def knowledge() -> list[Node]:
     """Top-level branches to merge with furniture-design's: sources, connectors, tools."""
     return [Node(id="sources", kind="", children=with_authority([source(), study(), saar(), sydor(),
                                                   lamello_page(P_15_2013), lamello_page(P_14_2014),
-                                                  instructions(), *zeta_sources(), brochure()], AUTHORITY)),
+                                                  instructions(), *zeta_sources(), brochure(), video()], AUTHORITY)),
             connectors(), tools()]
