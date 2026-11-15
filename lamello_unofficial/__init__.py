@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from quern.provenance import Quantity
 from quern.tree import Node
+from furniture_design.knowledge import with_authority
 
 SOURCE = "sources/lamello-clamex-p-14"
 TECHNICAL_DATA = f"{SOURCE}/technical-data"
@@ -568,9 +569,26 @@ def tools() -> Node:
     ])
 
 
+# Who stands behind each source (furniture-design's AUTHORITIES).
+AUTHORITY = {
+    "lamello-clamex-p-14": "maker",
+    "lamello-clamex-p-15-2013": "maker",
+    "lamello-clamex-p-14-2014": "maker",
+    "lamello-clamex-p-14-instructions": "maker",
+    "lamello-zeta-p2-manual": "maker",
+    "lamello-machining-with-power-tools": "maker",
+    "lamello-tip-angle-joints-zeta-p2": "maker",
+    "lamello-tip-milling-depth-zeta-p2": "maker",
+    "lamello-p-system-brochure": "maker",
+    "janikova-2025": "research",
+    "saar-2015": "research",
+    "sydor-2019": "research",
+}
+
+
 def knowledge() -> list[Node]:
     """Top-level branches to merge with furniture-design's: sources, connectors, tools."""
-    return [Node(id="sources", kind="", children=[source(), study(), saar(), sydor(),
+    return [Node(id="sources", kind="", children=with_authority([source(), study(), saar(), sydor(),
                                                   lamello_page(P_15_2013), lamello_page(P_14_2014),
-                                                  instructions(), *zeta_sources(), brochure()]),
+                                                  instructions(), *zeta_sources(), brochure()], AUTHORITY)),
             connectors(), tools()]
