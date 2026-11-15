@@ -2,7 +2,7 @@
 name = "lamello-unofficial"
 version = "0.1.0"
 description = "Lamello's connectors and the tools that cut their seats, as data on furniture-design's kinds. Unofficial: not written or endorsed by Lamello."
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = "AGPL-3.0-or-later AND CC-BY-NC-ND-4.0"
 license-files = ["LICENSE", "LICENSE-DATA"]
 dependencies = ["quern", "furniture-design"]
@@ -18,7 +18,7 @@ packages = ["lamello_unofficial"]
 dev = ["pytest>=8.0.0", "testplan"]
 
 [tool.uv.sources]
-testplan = { git = "https://github.com/xag/testplan", rev = "9913bbb00f3de6bc89d9360f8a2be722bf56e8a7" }
+testplan = { git = "https://github.com/xag/testplan", rev = "fe886041c5c20d03d6b8f07137836572e0155e03" }
 # Pinned by full rev, always, and to the same quern as furniture-design: uv accepts one URL
 # per distribution across a resolution.
 quern = { git = "https://github.com/xag/quern", rev = "07eff6efc0625ee0613a083095db4e6b75be7284" }
