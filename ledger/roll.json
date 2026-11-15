@@ -125,6 +125,21 @@
     "digest": "a05f36c6d4e6"
   },
   {
+    "path": "the-zeta-p2-says-its-own-settings-after-the-general-jointer",
+    "kind": "decision",
+    "digest": "7417c433b683"
+  },
+  {
+    "path": "the-zeta-p2-says-its-own-settings-after-the-general-jointer/the-jig-inside-the-machine",
+    "kind": "alternative",
+    "digest": "7f05db5e5d8e"
+  },
+  {
+    "path": "the-zeta-p2-says-its-own-settings-after-the-general-jointer/the-manuals-spacing-on-the-p14",
+    "kind": "alternative",
+    "digest": "68a16c195efb"
+  },
+  {
     "path": "this-repos-own-work-is-agpl",
     "kind": "decision",
     "digest": "f48eda3712cd"

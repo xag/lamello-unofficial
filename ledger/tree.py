@@ -214,6 +214,38 @@ def entries() -> list[Node]:
                      "cannot grow."),
             ],
         ),
+        Node(
+            id="the-zeta-p2-says-its-own-settings-after-the-general-jointer", kind="decision",
+            name="The Zeta P2 follows furniture-design's tools/plate-jointer and says only what is its own, from "
+                 "Lamello's documents: its depth set to max and P-14, the test groove and the 0.5 mm recess, "
+                 "the 10 mm from the base plate and the swivel stop to the cutter (groove_offset) and the 2 and "
+                 "4 mm spacers, the stops for an edge and a face groove, the centre marking, the edge groove "
+                 "first in a corner, and the plunge. The Clamex P drill jig (125344) is a tool of its own that "
+                 "the Clamex P-14 links drilled_with; the P-14 states its access hole (6 mm, 7.5 mm from the "
+                 "joint face) from its instruction sheet and where its grooves go (min. 37 mm from the end, "
+                 "max. 300 mm apart) from the brochure's P-14 page",
+            links={"rests_on": ["the-products-are-data-on-furniture-designs-kinds"]},
+            payload={"decided_on": "2026-11-15",
+                     "the_owner": "Je voudrais que les plans de montage détaillent les actions de perçage avec la "
+                                  "lamello zeta P2 [...] Les spécificités de Lamello et de ses modèles vont dans "
+                                  "lamello-unofficial mais ce qui est générique pour ce genre de machine reste "
+                                  "dans un paquet générique",
+                     "why": "What every jointer shares is said once, in the general package; what the Zeta P2 "
+                            "and the Clamex P add is Lamello's to state. Not found in any document read: the "
+                            "drilling depth (the jig's stop sets it), which jig for which thickness ('depending "
+                            "on the material thickness'), and in words which part takes the hole; the drawings "
+                            "put it in the part whose groove is in its edge.",
+                     "falsified_by": "a Lamello document giving another distance from the base plate to the "
+                                     "cutter, or putting the access hole in the face-grooved part"},
+            children=[
+                _alt("the-manuals-spacing-on-the-p14", "Take the P-14's groove spacing from the Zeta P2 manual",
+                     "The manual's figure is for P-System grooves in general; a connector's value comes from a "
+                     "passage about that connector, and the brochure's P-14 page prints the same 37 and 300 mm."),
+                _alt("the-jig-inside-the-machine", "Say the drilling in the Zeta P2's method",
+                     "The hole belongs to the connector, not to the machine: a CNC-cut groove is drilled with the "
+                     "same jig."),
+            ],
+        ),
     ]
 
 

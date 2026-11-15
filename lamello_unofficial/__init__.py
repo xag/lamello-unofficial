@@ -93,6 +93,12 @@ def instructions() -> Node:
                  "capture": "xag/furniture: sources/lamello/lamello-clamex-p-14-instructions/"
                             "Mode_d_emploi_ClamexP14.pdf (private)"},
         children=[
+            Node(id="groove-and-hole", kind="clause",
+                 payload={"locator": "p. 1, the section of the groove with the access hole (7.5) "
+                                     "and the steps on p. 2 (Ø 6 mm drill, Art. No. 131506)",
+                          "printed": {"access_hole_offset": "7.5", "access_hole_diameter": "Ø = 6 mm"}},
+                 params={"access_hole_offset": _published(7.5, "mm", "7.5, from the joint face"),
+                         "access_hole_diameter": _published(6, "mm", "Ø 6 mm drill")}),
             Node(id="open-and-close", kind="clause",
                  payload={"locator": "p. 2, the two figures marked open and close (sheet "
                                      "Clamex P-14 08/19)",
@@ -111,6 +117,15 @@ def connectors() -> Node:
                                   derived_from=[f"{TECHNICAL_DATA}/{name}"],
                                   note=f"size (L x H x I), {name}")
                    for name, v in CLAMEX_P_14_SIZE})
+    hole = f"{INSTRUCTIONS}/groove-and-hole"
+    params.update({name: Quantity(value=v, unit="mm", provenance="derived", grounded=True,
+                                  derived_from=[f"{hole}/{name}"], note=note)
+                   for name, v, note in [("access_hole_diameter", 6.0, "the hole it is closed through"),
+                                         ("access_hole_offset", 7.5, "from the joint face to the "
+                                                                     "hole's centre")]})
+    params.update({name: _from(f"{BROCHURE}/clamex-p-14-installation/{name}", note)
+                   for name, note in [("min_end_distance", "the first groove's middle from the end"),
+                                      ("max_spacing", "the most between two grooves' middles")]})
     clamex = Node(id="lamello-clamex-p-14", kind="connector", name="Lamello Clamex P-14",
                   payload={"maker": "Lamello", "setting": SETTING,
                            "kind_of_connector": "knock-down furniture connector seated in a "
@@ -120,7 +135,9 @@ def connectors() -> Node:
                            "tested_elsewhere": tested_elsewhere()},
                   params=params,
                   links={"needs": ["tools/lamello-zeta-p2", "tools/cnc-with-p-system-cutter"],
-                         "per": [TECHNICAL_DATA, DESCRIPTION, OPEN_AND_CLOSE, STUDY_RESULT,
+                         "drilled_with": ["tools/lamello-clamex-p-drill-jig"],
+                         "per": [TECHNICAL_DATA, DESCRIPTION, OPEN_AND_CLOSE, hole,
+                                 f"{BROCHURE}/clamex-p-14-installation", STUDY_RESULT,
                                  f"{STUDY}/specimens", f"{STUDY}/table-1-specimen-a"]})
     # a corner joint's resistance to being bent open or shut, per connector: the study's
     # joint of two connectors, halved; in N mm and N mm/rad, the units the checks use
@@ -373,11 +390,178 @@ def tested_elsewhere() -> list[dict]:
     return out
 
 
+# The Zeta P2's documents and what each says of setting it, cutting a groove and drilling the access
+# hole: (source id, name, url, sha256, its copy in xag/furniture, [(clause id, locator, {param: (value,
+# unit, as printed)})]); tests/test_zeta_p2.py finds each printed value in the text beside the copy
+MANUAL = "sources/lamello-zeta-p2-manual"
+MACHINING = "sources/lamello-machining-with-power-tools"
+ANGLE_TIP = "sources/lamello-tip-angle-joints-zeta-p2"
+DEPTH_TIP = "sources/lamello-tip-milling-depth-zeta-p2"
+ZETA_DOCS = [
+    ("lamello-zeta-p2-manual", "Lamello, Zeta P2 operating instructions (05/25, Art. No. 9881205VS)",
+     "https://lamello.com/fileadmin/products/Operating_instructions_Zeta_P2.pdf",
+     "4a3fc40f65d9b76dcb9a173e8fb939edf749c09e4e21d92d172e5b68723b619a",
+     "sources/lamello/zeta-p2/Operating_instructions_Zeta_P2.pdf", [
+         ("scope-of-delivery", "EN p. 6, Overview of machine, scope of delivery",
+          {"spacer_thick": (4, "mm", "Spacer plate 4 mm"), "spacer_thin": (2, "mm", "Spacer 2 mm")}),
+         ("groove-spacings", "EN p. 7, Recommended groove spacings, for the P-System",
+          {"min_end_distance": (37, "mm", "min. 37 mm"), "max_spacing": (300, "mm", "max. 300 mm")}),
+         ("cutting-grooves", "EN p. 8, Cutting grooves, 1 to 5", {}),
+         ("p-system-depth", "EN p. 9, Use for the P-System: set the depth adjuster, and adjusting the "
+                            "cutting depth after changing the cutter",
+          {"recess": (0.5, "mm", "0.5 mm below the"), "per_turn": (0.7, "mm", "0.7 mm")}),
+         ("angle-joint", "EN p. 10, Cutting grooves (angle joint), 1 and 2", {}),
+         ("drill-access-hole", "EN p. 12, Drill access hole, and its note",
+          {"drill_diameter": (6, "mm", "Spiral drill Ø 6 mm")}),
+     ]),
+    ("lamello-machining-with-power-tools", "Lamello, Machining with power tools (web page)",
+     "https://lamello.com/solutions/lamello-expertise/machining-with-power-tools",
+     "0d62b8d3baeb62f674c09cb5d8f6c3443f8908b00cb720bbf4a6e4f64d77dc78",
+     "sources/lamello/zeta-p2/pages/machining-with-power-tools.en.html", [
+         ("equal-distance", "Equal distance to the cutter",
+          {"groove_offset": (10, "mm", "the distance to the centre of the cutter is exactly 10 mm")}),
+         ("surface-connections", "180° surface connections, the spacers", {}),
+         ("butt-angle-joints", "Butt angle joints", {}),
+     ]),
+    ("lamello-tip-angle-joints-zeta-p2", "Lamello, Tips and tricks: Angle joints with the Zeta P2",
+     "https://lamello.com/solutions/lamello-expertise/tips-and-tricks/details-page/angle-joints-with-the-zeta-p2",
+     "c1e88a1b478bfe057be3311def83a661faac75412cd44d7307b41c3552ad714b",
+     "sources/lamello/zeta-p2/pages/tip_angle-joints-with-the-zeta-p2.en.html", [
+         ("steps", "steps 1 to 6", {}),
+     ]),
+    ("lamello-tip-milling-depth-zeta-p2", "Lamello, Tips and tricks: Finely adjusting the milling depth "
+                                          "on the Zeta P2",
+     "https://lamello.com/solutions/lamello-expertise/tips-and-tricks/details-page/"
+     "finely-adjusting-the-milling-depth-on-the-zeta-p2",
+     "a380ec732b3dd2b606ed788da4c156f7d62e28b623e619a3fed0ce23fcf258cf",
+     "sources/lamello/zeta-p2/pages/tip_finely-adjusting-the-milling-depth-on-the-zeta-p2.en.html", [
+         ("steps", "steps 1 to 6", {"per_turn": (0.7, "mm", "0.7mm")}),
+     ]),
+]
+
+
+BROCHURE = "sources/lamello-p-system-brochure"
+BROCHURE_DOC = ("lamello-p-system-brochure", "Lamello, P-System brochure (English, 2026)",
+                "https://lamello.com/fileadmin/Downloads/Broschueren/P-System/PDF/P-System_Broschuere_EN.pdf",
+                "03e0c0efd71ab8f76a6f327fd415d5a53c2e6ef989f9a511d74df2abaecb4da2",
+                "sources/lamello/zeta-p2/P-System_Broschuere_EN.pdf",
+                [("clamex-p-14-installation", "p. 11, Clamex P-14, Installation 1 to 8",
+                  {"min_end_distance": (37, "mm", "min.37 mm"), "max_spacing": (300, "mm", "max. 300 mm")})])
+
+
+def brochure() -> Node:
+    """The P-System brochure's page on the Clamex P-14: where its grooves go along a joint."""
+    sid, name, url, sha, copy, clauses = BROCHURE_DOC
+    (cid, loc, params), = clauses
+    return Node(id=sid, kind="source", name=name,
+                payload={"publisher": "Lamello AG", "year": 2026, "url": url, "fetched": "2026-11-15",
+                         "sha256": sha, "licence": "copyrighted", "capture": f"xag/furniture: {copy} (private)"},
+                children=[Node(id=cid, kind="clause",
+                               payload={"locator": loc, "connector": "Lamello Clamex P-14",
+                                        "printed": {k: v[2] for k, v in params.items()}},
+                               params={k: _published(v[0], v[1], v[2]) for k, v in params.items()})])
+
+
+def zeta_sources() -> list[Node]:
+    """The Zeta P2's manual and Lamello's pages on using it, one clause per passage relied on, its
+    values as printed."""
+    out = []
+    for sid, name, url, sha, copy, clauses in ZETA_DOCS:
+        out.append(Node(
+            id=sid, kind="source", name=name,
+            payload={"publisher": "Lamello AG", "year": 2026, "url": url, "fetched": "2026-11-15",
+                     "sha256": sha, "licence": "copyrighted",
+                     "capture": f"xag/furniture: {copy} (private)"},
+            children=[Node(id=cid, kind="clause",
+                           payload={"locator": loc, "printed": {k: v[2] for k, v in params.items()}},
+                           params={k: _published(v[0], v[1], v[2]) for k, v in params.items()})
+                      for cid, loc, params in clauses]))
+    return out
+
+
+def _from(ref: str, note: str) -> Quantity:
+    clause, param = ref.rsplit("/", 1)
+    v = next(q for d in [*ZETA_DOCS, BROCHURE_DOC] for cid, _l, ps in d[5] for k, q in ps.items()
+             if f"sources/{d[0]}/{cid}" == clause and k == param)
+    return Quantity(value=float(v[0]), unit=v[1], provenance="derived", grounded=True,
+                    derived_from=[ref], note=note)
+
+
+ZETA_SAY = {
+    "fr": {"name": "Lamello Zeta P2", "method": [
+        "Régler la butée de profondeur standard sur « max » et la butée P-System sur « 14 », la "
+        "même pour les deux pièces d'un assemblage.",
+        "Faire une rainure d'essai dans une chute et y engager une moitié de Clamex P-14 : elle doit "
+        "être à environ 0,5 mm sous la surface. Sinon, mettre la butée P-System sur « OFF », tourner "
+        "sa vis de réglage (un tour : 0,7 mm) et refaire un essai.",
+        "La fraise est à 10 mm de la plaque de base comme de la butée pivotante ; la cale de 2 mm ou "
+        "de 4 mm rapproche la rainure d'autant de sa référence.",
+        "Rainure dans un chant : rabattre la butée pivotante et la poser sur la face de référence. "
+        "Rainure dans une face : machine debout, l'équerre de butée fixée sur la plaque de base, la "
+        "plaque de base à fleur du chant de référence.",
+        "Aligner le marquage central de la plaque de base sur le trait.",
+        "Dans une jonction d'angle, fraiser d'abord la pièce rainurée dans son chant, puis reporter "
+        "le milieu de chaque rainure sur l'autre pièce, les deux pièces tenues ensemble.",
+        "Serrer la pièce ; tenir la machine à deux mains et plonger lentement et régulièrement "
+        "jusqu'en butée. Le profil se fraise seul : attendre que le téton du mécanisme VMD revienne "
+        "à fleur (1 à 2 secondes), puis relâcher."]},
+    "en": {"name": "Lamello Zeta P2", "method": [
+        "Set the standard depth adjuster to «max» and the P-System depth adjuster to «14», the same "
+        "for both parts of a joint.",
+        "Cut a test groove in an offcut and fit one half of a Clamex P-14: it should sit about 0.5 mm "
+        "below the surface. If not, turn the P-System adjuster to «OFF», turn its adjusting screw "
+        "(one turn: 0.7 mm) and cut another test.",
+        "The cutter is 10 mm from the base plate and from the swivel stop; the 2 mm or 4 mm spacer "
+        "brings the groove that much nearer its reference.",
+        "Groove in an edge: fold the swivel stop down onto the reference face. Groove in a face: the "
+        "machine upright, the stop square fixed on the base plate, the base plate flush with the "
+        "reference edge.",
+        "Line up the base plate's centre marking with the pencil line.",
+        "In a corner joint, cut the part grooved in its edge first, then transfer the middle of each "
+        "groove to the other part, the two held together.",
+        "Clamp the part; hold the machine with both hands and plunge slowly and evenly to the stop. "
+        "The profile cuts itself: wait until the VMD mechanism's pin is flush again (1 to 2 seconds), "
+        "then let go."]},
+}
+
+JIG_SAY = {
+    "fr": {"name": "Gabarit de perçage Clamex P (Lamello 125344)", "method": [
+        "Mettre l'insert du gabarit sur « 14 ».",
+        "Desserrer la molette, pousser le gabarit au milieu de la rainure, bien appuyé sur le chant "
+        "et sur la face, et resserrer la molette.",
+        "Tenir le gabarit et percer avec le foret hélicoïdal Ø 6 mm à pointe de centrage livré "
+        "(Lamello 131506).",
+        "Retirer le gabarit, vider les copeaux de la rainure, passer à la rainure suivante."]},
+    "en": {"name": "Clamex P drill jig (Lamello 125344)", "method": [
+        "Set the jig's insert to «14».",
+        "Loosen the knurled nut, push the jig into the middle of the groove, resting well on the edge "
+        "and on the face, and tighten the nut.",
+        "Hold the jig and drill with the Ø 6 mm spiral drill with centring point that comes with it "
+        "(Lamello 131506).",
+        "Remove the jig, clear the chips from the groove, and move to the next groove."]},
+}
+
+
 def tools() -> Node:
+    """The machine that cuts the P-System groove, following the general method of a biscuit or plate
+    jointer and adding its settings, and the jig the Clamex P's access hole is drilled with."""
     return Node(id="tools", kind="", children=[
         Node(id="lamello-zeta-p2", kind="tool", name="Lamello Zeta P2",
-             payload={"maker": "Lamello", "does": "cuts the P-System groove"},
-             links={"per": [DESCRIPTION]}),
+             payload={"maker": "Lamello", "does": "cuts the P-System groove",
+                      "spacers_mm": [2.0, 4.0], "say": ZETA_SAY},
+             params={"groove_offset": _from(f"{MACHINING}/equal-distance/groove_offset",
+                                            "from the base plate and from the swivel stop to the "
+                                            "middle of the groove")},
+             links={"per": [DESCRIPTION, f"{MANUAL}/scope-of-delivery", f"{MANUAL}/p-system-depth",
+                            f"{DEPTH_TIP}/steps", f"{MACHINING}/equal-distance",
+                            f"{MACHINING}/surface-connections", f"{MANUAL}/angle-joint",
+                            f"{ANGLE_TIP}/steps", f"{MACHINING}/butt-angle-joints",
+                            f"{MANUAL}/cutting-grooves"],
+                    "follows": ["tools/plate-jointer"]}),
+        Node(id="lamello-clamex-p-drill-jig", kind="tool", name="Lamello Clamex P drill jig",
+             payload={"maker": "Lamello", "does": "drills a Clamex P's access hole square to the face, "
+                                                  "centred on its groove", "say": JIG_SAY},
+             links={"per": [f"{MANUAL}/drill-access-hole"]}),
         Node(id="cnc-with-p-system-cutter", kind="tool", name="CNC machine with a P-System cutter",
              payload={"maker": "any", "does": "cuts the P-System groove"},
              links={"per": [DESCRIPTION]}),
@@ -388,5 +572,5 @@ def knowledge() -> list[Node]:
     """Top-level branches to merge with furniture-design's: sources, connectors, tools."""
     return [Node(id="sources", kind="", children=[source(), study(), saar(), sydor(),
                                                   lamello_page(P_15_2013), lamello_page(P_14_2014),
-                                                  instructions()]),
+                                                  instructions(), *zeta_sources(), brochure()]),
             connectors(), tools()]
