@@ -117,3 +117,22 @@ def test_the_zeta_p2s_sources_and_tools_break_none_of_furniture_designs_rules():
             "sources/lamello-tip-", "tools/lamello-", "connectors/lamello-")
     broken = [(r.rule, r.node) for r in run_rules(tree, "") if not r.ok and r.node.startswith(ours)]
     assert not broken, broken
+
+
+def test_the_zeta_p2_and_its_jig_are_drawn_from_models_that_hold_lamellos_printed_sizes():
+    """The models build into closed solids; the machine's front stop is 120 mm wide (60 + 60) and lies,
+    folded flat, 20 mm above the base (10 + 10 to the cutter); the jig's hole is the access hole's
+    7.5 mm from the joint face."""
+    import numpy as np
+    from furniture_design import lineart as la
+    tools = _tools()
+    model = tools["lamello-zeta-p2"].payload["model"]
+    flat = la.solids(model["poses"]["flat"])
+    v = np.vstack([m.v for m in flat[:3]])
+    assert v[:, 0].max() - v[:, 0].min() == 120 and v[:, 2].min() == 20
+    assert len(la.solids(model["parts"])) > 30
+    assert {d["shows"] for d in model["dials"]} == {"max", "setting"}
+    jig = tools["lamello-clamex-p-drill-jig"].payload["model"]
+    clamex = next(c for c in knowledge()[1].children if c.id == "lamello-clamex-p-14")
+    assert -jig["hole"][0] == clamex.params["access_hole_offset"].value
+    assert tools["lamello-zeta-p2"].params["test_recess"].value == 0.5

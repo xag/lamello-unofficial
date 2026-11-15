@@ -24,6 +24,8 @@ from quern.provenance import Quantity
 from quern.tree import Node
 from furniture_design.knowledge import with_authority
 
+from . import models
+
 SOURCE = "sources/lamello-clamex-p-14"
 TECHNICAL_DATA = f"{SOURCE}/technical-data"
 DESCRIPTION = f"{SOURCE}/product-description"
@@ -578,10 +580,13 @@ def tools() -> Node:
     return Node(id="tools", kind="", children=[
         Node(id="lamello-zeta-p2", kind="tool", name="Lamello Zeta P2",
              payload={"maker": "Lamello", "does": "cuts the P-System groove",
-                      "spacers_mm": [2.0, 4.0], "say": ZETA_SAY},
+                      "spacers_mm": [2.0, 4.0], "say": ZETA_SAY, "model": models.zeta_p2()},
              params={"groove_offset": _from(f"{MACHINING}/equal-distance/groove_offset",
                                             "from the base plate and from the swivel stop to the "
-                                            "middle of the groove")},
+                                            "middle of the groove"),
+                     "test_recess": _from(f"{MANUAL}/p-system-depth/recess",
+                                          "how far under the surface the connector sits in a test groove "
+                                          "cut at the right depth")},
              links={"per": [DESCRIPTION, f"{MANUAL}/scope-of-delivery", f"{MANUAL}/p-system-depth",
                             f"{DEPTH_TIP}/steps", f"{MACHINING}/equal-distance",
                             f"{MACHINING}/surface-connections", f"{MANUAL}/angle-joint",
@@ -591,7 +596,8 @@ def tools() -> Node:
                     "follows": ["tools/plate-jointer"]}),
         Node(id="lamello-clamex-p-drill-jig", kind="tool", name="Lamello Clamex P drill jig",
              payload={"maker": "Lamello", "does": "drills a Clamex P's access hole square to the face, "
-                                                  "centred on its groove", "say": JIG_SAY},
+                                                  "centred on its groove", "say": JIG_SAY,
+                      "model": models.drill_jig()},
              links={"per": [f"{MANUAL}/drill-access-hole", f"{VIDEO}/drill-the-edge-grooved-part"]}),
         Node(id="cnc-with-p-system-cutter", kind="tool", name="CNC machine with a P-System cutter",
              payload={"maker": "any", "does": "cuts the P-System groove"},

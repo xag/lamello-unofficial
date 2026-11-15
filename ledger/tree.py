@@ -246,6 +246,29 @@ def entries() -> list[Node]:
                      "same jig."),
             ],
         ),
+        Node(
+            id="the-zeta-p2-is-modelled-from-lamellos-printed-sizes-and-drawings", kind="decision",
+            name="The Zeta P2 and the Clamex P drill jig carry 3D models (payload model) the assembly "
+                 "instructions draw them from: what Lamello prints (the 120 mm stop, the 100 mm cutter, 10 mm "
+                 "from the base plate and from the folded stop to the cutter's middle, the jig's 7.5 mm), and "
+                 "the rest measured from Lamello's own drawings (the operating instructions' exploded and "
+                 "assembled views, scaled by the stop and the cutter) and photos (scaled by the stop's 0-50 "
+                 "scale), to about 10 %. The test groove's recess (0.5 mm) is a param derived from the manual",
+            links={"rests_on": ["the-zeta-p2-says-its-own-settings-after-the-general-jointer"]},
+            payload={"decided_on": "2026-11-15",
+                     "the_owner": "You need a realistic model of the Lamello, not just a few understandable "
+                                  "grey strokes. Simple doesn't mean bad. To the contrary. Simple is a lot of work",
+                     "why": "Lamello prints no outside size of the machine; a model measured from its drawings is "
+                            "faithful to what a builder sees, and a tape on a real machine would replace each "
+                            "measured value (the motor's length, the handle's height and the stop square first).",
+                     "falsified_by": "a measured size of a real Zeta P2 more than 10 % off the model's"},
+            children=[
+                _alt("generic-box", "Draw a generic jointer as a few boxes",
+                     "The owner: not clear at all; a stylised tool is recognised least (Haaland, via Schumacher 2011)."),
+                _alt("lamellos-drawing", "Copy Lamello's line drawings",
+                     "They are Lamello's copyright; the model takes sizes, which are facts."),
+            ],
+        ),
     ]
 
 

@@ -125,6 +125,21 @@
     "digest": "a05f36c6d4e6"
   },
   {
+    "path": "the-zeta-p2-is-modelled-from-lamellos-printed-sizes-and-drawings",
+    "kind": "decision",
+    "digest": "d838af00d08e"
+  },
+  {
+    "path": "the-zeta-p2-is-modelled-from-lamellos-printed-sizes-and-drawings/generic-box",
+    "kind": "alternative",
+    "digest": "4f6c85d9d845"
+  },
+  {
+    "path": "the-zeta-p2-is-modelled-from-lamellos-printed-sizes-and-drawings/lamellos-drawing",
+    "kind": "alternative",
+    "digest": "4b7af830d46a"
+  },
+  {
     "path": "the-zeta-p2-says-its-own-settings-after-the-general-jointer",
     "kind": "decision",
     "digest": "7417c433b683"
